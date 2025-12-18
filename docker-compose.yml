@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  mongo:
+    image: mongo:7.0
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+
+  backend:
+    image: ehshanulla/deal-pipeline-backend:1.0
+    ports:
+      - "8080:8080"
+    environment:
+      JWT_SECRET: 2a78979b6b557ad5d62fe72037c8342a
+      MONGO_URI: mongodb://mongo:27017/app
+
+  frontend:
+    image: ehshanulla/deal-pipeline-frontend:1.0
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  mongo-data:
