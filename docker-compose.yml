@@ -12,7 +12,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      JWT_SECRET: 2a78979b6b557ad5d62fe72037c8342a
+      JWT_SECRET: use your own, atleast a 64 bit key for good token generation
       MONGO_URI: mongodb://mongo:27017/app
 
   frontend:
