@@ -3,20 +3,27 @@ version: '3.9'
 services:
   mongo:
     image: mongo:7.0
+    container_name: deal-mongo
     restart: unless-stopped
     volumes:
       - mongo-data:/data/db
 
   backend:
     image: ehshanulla/deal-pipeline-backend:1.0
+    container_name: deal-backend
+    restart: unless-stopped
     ports:
       - "8080:8080"
     environment:
-      JWT_SECRET: use your own, atleast a 64 bit key for good token generation
+      JWT_SECRET: ${JWT_SECRET}
       MONGO_URI: mongodb://mongo:27017/app
+    depends_on:
+      - mongo
 
   frontend:
     image: ehshanulla/deal-pipeline-frontend:1.0
+    container_name: deal-frontend
+    restart: unless-stopped
     ports:
       - "80:80"
     depends_on:
