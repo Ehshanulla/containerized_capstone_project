@@ -253,10 +253,27 @@ ng build --prod --output-path=dist/browser
 2. Create a `Dockerfile` for frontend:
 
 ```dockerfile
+# Build stage
+FROM node:20-alpine AS build
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+RUN npm run build -- --configuration production
+
 FROM nginx:alpine
-COPY dist/browser /usr/share/nginx/html
+
+RUN rm /etc/nginx/conf.d/default.conf
+
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY --from=build /app/dist/InvestmentBankingDealPipelineManagementPortalFrontEnd/browser /usr/share/nginx/html
+
 EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+
 ```
 
 3. Build Docker image:
