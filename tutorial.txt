@@ -1,0 +1,28 @@
+to install git
+
+	sudo yum install git -y
+to install docker
+	sudo yum install docker -y
+to start docker 
+	sudo systemctl start docker
+	sudo systemctl enable docker
+Add user to docker group (IMPORTANT)
+	sudo usermod -aG docker ec2-user
+Log out & log in again after this:
+	exit
+verify
+	docker --version
+	docker ps
+Amazon Linux does NOT include docker-compose by default.
+	sudo mkdir -p /usr/local/lib/docker/cli-plugins
+	sudo curl -SL https://github.com/docker/compose/releases/download/v2.29.7/docker-compose-linux-x86_64 \-o /usr/local/lib/docker/cli-plugins/docker-compose
+	sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+veriffy
+	docker compose version
+Clone GitHub repo on EC2
+nano .env
+echo "JWT_SECRET=$(openssl rand -base64 64)" >> .env
+cat .env
+Restart containers (IMPORTANT)
+docker compose down
+docker compose up -d
